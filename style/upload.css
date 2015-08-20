@@ -1,0 +1,45 @@
+body{
+background-color: #eee5de;
+font-size:13pt;
+
+}
+input{
+    cursor: pointer;
+    font-size: 24pt;
+    width:200px;
+}
+table, tr, td{
+    border-collapse: collapse;
+    table-layout: auto;
+    border: 1px solid #000;
+    padding:10px;
+}
+p span{
+    font-weight: bold;
+}
+.tr-top, .tr-tytle{
+    font-weight: bold;
+
+}
+#container{
+    width:900px;
+  margin: 0 auto;  
+}
+#row1{
+    width:800px;
+    margin:50px;
+}
+#row1 p{
+    margin-top:10px;
+    margin-bottom: 10px;
+    font-size: 18pt;
+}
+#row2{
+    width:900px;
+    margin:20px auto;
+}
+#row3{
+    width:900px;
+    margin:30px 0px 70px;
+    text-align: center;
+}

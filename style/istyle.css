@@ -1,0 +1,51 @@
+﻿#iposition{
+	position: absolute; 
+    width: 480px; 
+    height: 150px; 
+    left: 50%; 
+    top: 20%; 
+    margin-left: -240px; 
+    margin-top: -40px;	
+    background: #DDDDDD; 
+    border: solid 1px black; 
+    padding: 10px; 
+    *overflow: auto; 
+}
+#ititle{
+	position:absolute;
+	top: 30px;
+    left: 30px; 
+}
+#form1{
+position:absolute;
+	top: 70px; 
+    left: 30px; 
+}
+#btn1{
+	width:120px;
+}
+#form2{
+position:absolute;
+	top: 70px; 
+    left: 155px; 
+}
+#btn2{
+	width:100px;
+}
+#form3{
+position:absolute;
+	top: 70px; 
+    left: 260px; 
+}
+#btn3{
+	width:100px;
+}
+#form4{
+position:absolute;
+	top: 70px; 
+    left: 365px; 
+}
+#btn4{
+	width:100px;
+}
+}
