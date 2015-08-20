@@ -421,56 +421,10 @@ if(!$access->accessYes($idPage)){
 	echo json_encode($data);
 	exit;
 }
-	
-	// принимаем POST-данные и декодируем их
+	// принимаем POST-данные и передаем их в класс
 	$value = json_decode($_REQUEST["data"]);
-	$order=mysql_real_escape_string(trim($value->order));//имя одрера
-	$sl_id=mysql_real_escape_string((int)$value->sl_id);
-	$mName=mysql_real_escape_string(trim($value->mName));//имя модели
-	$week=mysql_real_escape_string((int)$value->week);
-	$month=mysql_real_escape_string((int)$value->month);
-	$year=mysql_real_escape_string((int)$value->year);
-	$query="SELECT `o_id` FROM `ns_orders` WHERE `order`='$order'";
-	$result=$access->resQuery($query);
-	$row=mysql_fetch_array($result,MYSQL_ASSOC);
-	$o_id=$row["o_id"];
-	$query="SELECT `ml_id` FROM `ns_model_list` WHERE `mName`='$mName'";
-	$result=$access->resQuery($query);
-	$row=mysql_fetch_array($result,MYSQL_ASSOC);
-	$ml_id=$row["ml_id"];
-	$arg=compact('sl_id','week','month','year','o_id','ml_id');
-	// $query="SELECT family,name,countDid,ns_techmap.serial,ns_techmap.descript 
-	// 		FROM ns_results,ns_workers,ns_techmap 
-	// 		WHERE 
-	// 		`week`='$week' 
-	// 		AND `month`='$month' 
-	// 		AND `year`='$year' 
-	// 		AND `o_id`='$o_id' 
-	// 		AND ns_results.ml_id='$ml_id'
-	// 		AND ns_results.sl_id='$sl_id'
-	// 		AND ns_results.w_id=ns_workers.w_id
-	// 		AND ns_results.t_id=ns_techmap.t_id ORDER BY (ns_techmap.serial+0)";
-	// 		$result=$access->resQuery($query);
-//$data["query"]=$query;
-	// $query="SELECT family,name,countDid,ns_techmap.serial,ns_techmap.descript
-	// FROM ns_workers,ns_results,ns_model_list,ns_techmap, ns_orders
-	// WHERE ns_techmap.sl_id='$sl_id' AND ns_results.w_id=ns_workers.w_id 
-	// AND ns_model_list.mName='$mName' AND ns_results.t_id=ns_techmap.t_id 
-	// AND ns_results.o_id=ns_orders.o_id  AND ns_orders.order='$order'";
-	// $result=$access->resQuery($query);
-	//$i=0;
-	// while($row=mysql_fetch_array($result,MYSQL_ASSOC)){
-	// 	$data["List"][$i]=array(
-	// 		"family"=>$row["family"],
-	// 		"name"=>$row["name"],
-	// 		"serial"=>$row["serial"],
-	// 		"descript"=>$row["descript"],
-	// 		"countDid"=>$row["countDid"]
-	// 	);
-	// 	$i++;
-	// }
 	$r=new Result($access->getConnDB());
-	$data=$r->checkOrder($arg);
+	$data=$r->checkOrder($value);
 	$data['login']=true;
 	echo json_encode($data);
 }

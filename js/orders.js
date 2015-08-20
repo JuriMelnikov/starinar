@@ -570,6 +570,7 @@ var xmlhttp=ajaxConnect();
 	//alert("data="+data);
 data={};
 data.order=document.getElementById("aOrder").value;
+//alert(data.order);
 data.sl_id=sl_id;
 data.mName=mName;
 data.week=document.getElementById("selWeek").value;

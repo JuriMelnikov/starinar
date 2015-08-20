@@ -32,16 +32,22 @@ class Result{
     *   возвращает данные для функции faCheckOrder
     *
     */
-    public function checkOrder($arg)
+    public function checkOrder($value)
     {
-      extract($arg);
+      $week=(int)$value->week;
+      $month=(int)$value->month;
+      $year=(int)$value->year;
+      $order=mysql_real_escape_string(trim((string)$value->order));
+      $model=mysql_real_escape_string(trim((string)$value->mName));
+      $sl_id=(int)$value->sl_id;
+
       $i=0;
       foreach ($this->results as $key => $row) {
         if($row['week']==$week AND 
             $row['month']==$month AND 
               $row['year']==$year AND 
-                $row['o_id']==$o_id AND 
-                  $row['ml_id']==$ml_id AND 
+                $row['order_name']==$order AND 
+                  $row['model']==$model AND 
                     $row['sl_id']==$sl_id ){
           $data["List"][$i]=array(
                                 "family"=>$row["family"],
@@ -53,15 +59,6 @@ class Result{
         }
         $i++;
       }
-      foreach ($data as $key => $value) {
-        $family[$key]=$value['family'];
-        $serial[$key]=$value['serial'];
-       // $countDid[$key]=$value['countDid'];
-      }
-      // // $fam=array_unique($family);
-      
-      
-       array_multisort($family,$setial,$data);
       return $data;
     }
     /**
