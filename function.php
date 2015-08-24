@@ -20,7 +20,7 @@ include_once 'Classes/ModelsList.php';
 include_once 'Classes/Models.php';
 include_once 'Classes/Counts.php';
 include_once 'Classes/AppointmentsList.php';
-
+include_once 'Classes/Family.php';
 
 
 
@@ -426,6 +426,7 @@ if(!$access->accessYes($idPage)){
 	$r=new Result($access->getConnDB());
 	$data=$r->checkOrder($value);
 	$data['login']=true;
+
 	echo json_encode($data);
 }
 
@@ -2381,9 +2382,9 @@ $w_id=0;
 								
 					}
 					if($sumPayment!=0 || $sumTime!=0){
-						$dt["data"][$num]["sumPrice"]=$sumPayment;
+						$dt["data"][$num]["sumPrice"]=round($sumPayment,2);
 						$dt["data"][$num]["sumTime"]=$sumTime;//$sumTime;
-						$kokku+=$sumPayment;
+						$kokku+=round($sumPayment,2);
 					}
 			}
 		}   
@@ -2422,8 +2423,8 @@ $w_id=0;
 							
 				}
 				if($sumPayment!=0 || $sumTime!=0){
-					$dt["sumPrice"]=$sumPayment;
-					$dt["sumTime"]=$sumTime;//$sumTime;
+					$dt["sumPrice"]=round($sumPayment,2);
+					$dt["sumTime"]=round($sumTime,2);//$sumTime;
 					
 				}else{
 					$dt["family"]="Нет данных";

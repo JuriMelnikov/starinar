@@ -2,7 +2,7 @@
 class ToBase{
 /* filds */
 private $db="jvmee_starinar";
-private $pass="Starinar=Nikitin";
+private $pass="12345";
 private $user="jvmee_nikitin";
 private $host="localhost";
 private $port = ""; 

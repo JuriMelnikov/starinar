@@ -533,7 +533,7 @@ var xmlhttp=ajaxConnect();
 		if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		{
 			var fromPHPs=xmlhttp.responseText;
-//alert("checkOrder.fromPHPs: "+fromPHPs);			
+alert("checkOrder.fromPHPs: "+fromPHPs);			
 		try{
 				fromPHPobj=!(/[^,:{}[]0-9.-+Eaeflnr-u nrt]/.test(fromPHPs.replace(/"(.|[^"])*"/g, ''))) && eval("(" + fromPHPs + ")");
 				if(fromPHPobj["login"]){

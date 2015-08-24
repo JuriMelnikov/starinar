@@ -17,13 +17,31 @@ echo "Подключились к ToBase";
 $year=2015;
 $month=8;
 $week=34;
-$models[0]='Модель H258-1;';
-$models[1]='Модель H258-2;';
-$sl_id=56;
-$counts[0]=2;
-$counts[1]=2;
-$order='222';
-$o_id=179;
+$order='11';
+$model="Модель H258-1;";
+$sl_id=54;
+$serial=2;
+$r=new Result($access->getConnDB());
+echo "<br>создали Result";
+    $data=$r->checkOrder($value);
+echo "<br>получили дату";
+print_r($data);
+foreach ($data["List"] as $key => $value) {
+    print_r ($value);
+    // echo "<br>$key";
+    // echo " $value['family']";
+    // $value['serial'] $value['count']";
+
+}
+    //print_r($data);
+// $models[0]='Модель H258-1;';
+// $models[1]='Модель H258-2;';
+// $sl_id=56;
+// $counts[0]=2;
+// $counts[1]=2;
+// $order='11';
+// $w_id=47;
+// $o_id=179;
 // $r=new Result($access->getConnDB());
 // $arg=compact('sl_id','week','month','year','o_id','ml_id');
 // $data=$r->checkOrder($arg);
