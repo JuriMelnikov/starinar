@@ -32,44 +32,45 @@ class Result{
 	*   возвращает данные для функции faCheckOrder
 	*
 	*/
-	public function checkOrder()
+	public function checkOrder($value)
 	{
-		$year=2015;
-		$month=8;
-		$week=34;
-		$order='11';
-		$model="Модель H258-1;";
-		$sl_id=55;
-echo "<br>это checkOrder";
-		// $week=(int)$value->week;
-		// $month=(int)$value->month;
-		// $year=(int)$value->year;
-		// $order=mysql_real_escape_string(trim((string)$value->order));
-		// $model=mysql_real_escape_string(trim((string)$value->mName));
-		// $sl_id=(int)$value->sl_id;
-		// $w_idArray=array();
-		$i=0;
+		// $year=2015;
+		// $month=8;
+		// $week=35;
+		// $order='Заказ 1';
+		// $model="Модель H258-1;";
+		// $sl_id=59;
+		$week=(int)$value->week;
+		$month=(int)$value->month;
+		$year=(int)$value->year;
+		$order=mysql_real_escape_string(trim((string)$value->order));
+		$model=mysql_real_escape_string(trim((string)$value->mName));
+		$sl_id=(int)$value->sl_id;
+		
 		//Делаем выборку работников в массив $d, которые выполнили 
 		//заданный ордер, модель из заданного раздела
+		$i=0;
 		foreach ($this->results as $key => $row) {
 		  if($row['week']==$week AND 
 			  $row['month']==$month AND 
 				$row['year']==$year AND 
 				  $row['order_name']==$order AND 
 					$row['model']==$model AND 
-					  $row['sl_id']==$sl_id ){
-			  //$data["List"][$i]=array(
+					  $row['sl_id']==$sl_id){
+				
 				$d[$i]=array(
 								  "w_id"=>$row["w_id"],
 								  "family"=>$row["family"],
 								  "name"=>$row["name"],
 								  "serial"=>$row["serial"],
 								  "countDid"=>$row["countDid"]
-			  );
-		  }
-		  $i++;
+				);
+			}
+			$i++;
 		}
-echo "<br> создали массив d";
+// echo "<br>выборка: ";
+// print_r($d);
+// echo "<br>";
 		//Создаем массивы по столбцам выборки
 		foreach ($d as $key => $value) {
 			$w_id[]=$value['w_id'];
@@ -78,105 +79,71 @@ echo "<br> создали массив d";
 			$family[]=$value['family'];
 			$name[]=$value['name'];
 		}
-echo "<br> создали массивы слолбцов";
-		// Проходим по столбцу serial и с каждым значением проверяем 
-		// столбец w_id. 
+		$w_id=array_unique($w_id);
+		$serial=array_unique($serial);
+// echo "<br>";
+//  print_r($w_id);
+// echo "<br>";
+// print_r($serial);
+// echo "<br>";
+
+		// Берем n значение из w_id, берем k значение из $serial и проходим по массиву строк d
+		// если выбрано значение из w_id[n] и значение из $serial[k] есть в выборке, то добавляем 
+		// строку в fam, причем суммируем поле count.
 		
-		foreach ($serial as $i => $s) {
-echo "<br> Faaamilyyy";
-			$ar[$i]=new Family(); // Создаем экз. объекта Family 
-
-			foreach ($w_id as $n => $w) {
-				//По порядку сравниваем значения в w_id друг с другом
-				if($w_id[$i]==$w){
-				//если есть совпадения, добавляем в массив $ar объект Family
-					if($ar[$i]->family==''){
-					//если объект Family не инициализирован - инициализируем
-						$ar[$i]->setW_id($w_id[$i]);
-						$ar[$i]->setSerial($serial[$i]);
-						$ar[$i]->setFamily($family[$i]);
-						$ar[$i]->setName($name[$i]);
-						$ar[$i]->setCount($ar[$i]->getCount()+$count[$n]);
-					}else{ // иначе сумируем со значением из количества
-						$ar[$i]->setCount($count[$n]);
+		$j=0;
+		foreach ($w_id as $n => $w) {
+			foreach ($serial as $k => $s) {
+				 $fam[$j]=new Family(); // Создаем экз. объекта Family
+				foreach ($d as $i => $row) {
+					if($w==$row['w_id'] AND $s==$row['serial']){
+						//if($fam[$n]->getW_id==''){
+						//если объект Family не 4инициализирован - инициализируем
+							$fam[$j]->setW_id($row['w_id']);
+							$fam[$j]->setSerial($row['serial']);
+							$fam[$j]->setFamily($row['family']);
+							$fam[$j]->setName($row['name']);
+							$fam[$j]->setCount($fam[$j]->getCount()+$row['countDid']);
+// echo "<br> fam = ";
+// print_r($fam[$j]);
+// echo "<br>";
 					}
-					echo "ar=".$ar[$i]->getFamily();
 				}
+				if($fam[$j]->getW_id()!=''){
+					$ar[]=$fam[$j];
+				}
+// echo "<br> ar =  ";
+// print_r($ar);
+// echo "<br>";
 			}
+			$j++;
 		}
-echo "<br> Создали Family и ar";
-		//echo $ar->getFamily();
-		 // foreach ($data as $key => $value) {
-		 //   if(!in_array($w_id, $data2)){
-			//   $data2=array(
-			// 	'w_id'=>$value['w_id'],
-			// 	'family'=>$value['family'],
-			// 	'name'=>$value['name'],
-			// 	'serial'=>$value['serial'],
-			// 	'countDid'=$value['countDid']
-			// 	 );
-			// if($data2['serial']==$value['serial']){
-
-			  
-			// }
-		 //   }
-		 // }
-
+// echo "<br><br> Создали ar "; print_r($ar);
+// echo "<br>";
 		//var_dump($ar);
 		// Получили массив $ar, который состоит из объекта Family,
 		// причем каждый объект содержит уникальное сочетание фамилии 
 		// и раздела. Это то, что нужно показать в виде.
 		// Инициируем массив для вида.
-		//$i=0;
+		$i=0;
 		foreach ($ar as $key => $value) {
-			$data["List"][$key]=array(
-								"w_id"=>$value->getW_id(),
-								"family"=>$value->getFamily(),
-								"name"=>$value->getName(),
-								"serial"=>$value->getSerial(),
-								"countDid"=>$value->getCount()
-			);
-			//$i++;
+			// if(!in_array($value->getSerial(), $arSerial)){
+			// 	$arSerial[]=$value->getSerial();
+				$data["List"][$i]=array(
+									"w_id"=>$value->getW_id(),
+									"family"=>$value->getFamily(),
+									"name"=>$value->getName(),
+									"serial"=>$value->getSerial(),
+									"countDid"=>$value->getCount()
+				);
+			$i++;
 		}
-		echo "<br>создали массив data";
 		return $data; 
-// $k=$row['name'];
-//             $w_id=$row["w_id"];//$$w_id(_11)=
-//             //$var=$data['List'][$i]['w_id'].$data['List'][$i]['name'].$data['List'][$i]['serial'];
-//             if($w_idArray[$w_id]['w_id']==$w_id AND $w_idArray[$w_id]['w_id']==''){
-			  
-//               $w_idArray[$w_id['count']]=$row['countDid'];
-//               $w_idArray[$w_id['family']]=$row['family'];
-//               $w_idArray[$w_id['name']]=$row['name'];
-//               $w_idArray[$w_id['serial']]=$row['serial'];
-//               //$k['fam']=$w_idArray[$w_id]['family'];
-//               //$k['w_id']=$w_id;
-//             }else{
-//               $w_idArray[$w_id['count']]+=$row["countDid"];
-//             }
-//             $i++;
-//           }
-//         }
-//          $i=0;
-//         foreach ($w_idArray as $key => $value) {
-//           if($key == $data['List'][$i]['w_id']){
-//             $dt['List'][$i]=array(
-//               'family'=>$key['family'],
-//               'name'=>$key['name'],
-//               'serial'=>$key['serial'],
-//               'count'=>$key['count']
-//               );
-//             // $res[]=new Family($data['List'][$key]['countDid'],
-			//                       $data['List'][$key]['family'],
-			//                       $data['List'][$key]['name'],
-			//                       $data['List'][$key]['serial']
-			//                       );
-			
 	}
 	/**
 	*   возвращает массив для вывода таблицы выполненной работы за неделю 
 	*/
-	public function getWeekTable($w_id,$week,$month,$year)
+	public function getWeekTable($w_id,$week,$year)
 	{ 
 		$i=0;
 		$sql="SELECT * FROM `ns_results` WHERE `w_id`='$w_id' AND `week`='$week' AND `year`='$year' ORDER BY date DESC";
@@ -192,9 +159,9 @@ echo "<br> Создали Family и ar";
 		   $res['data'][$i]['section']=$value['section'];
 		   $res['data'][$i]['operate']=$value['operate'];
 		   $res['data'][$i]['countDid']=$value['countDid'];
-		   $res['data'][$i]['payment']=$value['w_id_payment'];
-		   $res['data'][$i]['time']=$value['operate_time'];
-		   $res['data'][$i]['sum']+=$value['w_id_payment']*$value['operate_time']*$value['countDid'];
+		   $res['data'][$i]['payment']=round($value['w_id_payment'],2);
+		   $res['data'][$i]['time']=round($value['operate_time'],2);
+		   $res['data'][$i]['sum']=round($value['w_id_payment']*$value['operate_time']*$value['countDid'],2);
 		   $sumTime+=$value['operate_time'];
 		   $sumPayment+=$value['w_id_payment']*$value['operate_time']*$value['countDid'];
 		   $i++;
@@ -226,9 +193,9 @@ echo "<br> Создали Family и ar";
 		   $res['data'][$i]['section']=$value['section'];
 		   $res['data'][$i]['operate']=$value['operate'];
 		   $res['data'][$i]['countDid']=$value['countDid'];
-		   $res['data'][$i]['payment']=$value['w_id_payment'];
-		   $res['data'][$i]['time']=$value['operate_time'];
-		   $res['data'][$i]['sum']=$value['w_id_payment']*$value['operate_time']*$value['countDid'];
+		   $res['data'][$i]['payment']=round($value['w_id_payment'],2);
+		   $res['data'][$i]['time']=round($value['operate_time'],2);
+		   $res['data'][$i]['sum']=round($value['w_id_payment']*$value['operate_time']*$value['countDid'],2);
 		   $sumTime+=$value['operate_time'];
 		   $sumPayment+=$value['w_id_payment']*$value['operate_time']*$value['countDid'];
 		   $i++;
@@ -267,7 +234,7 @@ echo "<br> Создали Family и ar";
 			}        
 		}
 		
-		return $payment;
+		return round($payment,2);
 	}
 
 

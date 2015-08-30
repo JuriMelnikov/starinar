@@ -26,8 +26,10 @@ echo "<br>создали Result";
     $data=$r->checkOrder($value);
 echo "<br>получили дату";
 print_r($data);
+
 foreach ($data["List"] as $key => $value) {
-    print_r ($value);
+    echo "<br>";
+    print_r($value);
     // echo "<br>$key";
     // echo " $value['family']";
     // $value['serial'] $value['count']";

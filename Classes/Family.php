@@ -8,7 +8,7 @@ class Family {
 
     public function __construct()
     {
-         echo "Family - constructor";
+        // echo "Family - constructor";
         // if($w_id != 0){
         //   $this->w_id=$w_id;
         // }
@@ -26,9 +26,9 @@ class Family {
         //   $this->serial=$serial;  
         // }        
     }
-    public function getW_id($w_id)
+    public function getW_id()
     {
-        $this->w_id=$w_id;
+        return $this->w_id;
     }
     public function getFamily()
     {

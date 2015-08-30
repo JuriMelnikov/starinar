@@ -124,19 +124,10 @@ var xmlhttp=ajaxConnect();
 			 var fromPHPs=xmlhttp.responseText;
 	if(test==1) alert("logout.fromPHPs="+fromPHPs);
 			try{
-				/* document.getElementById("back").style.display="none"
-				document.getElementById("login").value='';
-				document.getElementById("pass").value='';
-				document.getElementById("login").disabled=false;
-				document.getElementById("w_id").value='';
-				document.getElementById("sSelectNameFamily").selectedIndex=-1;
-				 */
 				location.reload();
-				
 			}catch(e){
 				alert("logout: "+e);
 			}
-		
 		}
 	}
 	xmlhttp.open("POST","scr_seamstress.php?timeStamp="+new Date().getTime()+"&f=14",false);
@@ -506,7 +497,7 @@ if(test==1)	alert("selectFamily.fromPHPs="+fromPHPs);
 							}
 						}
 						var tblTrKonto ='<table id="tblKonto" border="0"><tr id="trTable">';//	
-								tblTrKonto += '<td id="tdTimeValue" colspan="7">'+timeStr(fromPHPobj['sumTime']);
+								tblTrKonto += '<td id="tdTimeValue" colspan="7">Время: '+fromPHPobj['sumTime'];
 								tblTrKonto += '<td id="tdSum" >Сумма: ';
 								tblTrKonto += '</td><td id="tdSumValue">'+fromPHPobj["sumPayment"];
 								tblTrKonto += '</td></tr></table>';
@@ -806,12 +797,15 @@ xmlhttp.onreadystatechange=function()
    }
    document.getElementById("selMod").value=document.getElementById("sModel").selectedIndex;
    var data={};
+   data.m_id=m_id;
+   data.a_id=document.getElementById("sOrder").value;
+  //alert(data.m_id+" "+data.a_id);
   // data.a_id=a_id;"data="+JSON.stringify(data)
    //указываем идентификатор ордера, а по нему выберем все m_id, model из ns_models
    //if((data.a_id!==undefined) || (data.a_id !="")){ 
 		xmlhttp.open("POST","scr_seamstress.php?timeStamp="+new Date().getTime()+"&f=3",true);
 		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		xmlhttp.send();
+		xmlhttp.send("data="+JSON.stringify(data));
 	//}	
 }
 
@@ -902,7 +896,7 @@ xmlhttp.onreadystatechange=function()
 						tblTr +='<tr class="trTable"><th id="thId">№';//№	
 									//tblTr += '</td><th id="thS">Раздел</td>';
 									tblTr += '</td><th id="thD">Описание</td>';
-									tblTr += '</td><th id="thT">Время (сек)';
+									tblTr += '</td><th id="thT">Время';
 									tblTr += '</td><th id="thP">Расценка';
 									tblTr += '</td></tr>';
 						tblTr +='<tr class="trTable2"><td class="tdId">'+operateList['list']["serial"];//№	
@@ -940,7 +934,7 @@ xmlhttp.onreadystatechange=function()
 			tblTr +='<tr class="trTable"><th id="thId">ID';//ID	
 						tblTr += '</td><th id="thS">Секция</td>';
 						tblTr += '</td><th id="thD">Описание</td>';
-						tblTr += '</td><th id="thT">Время (сек)';
+						tblTr += '</td><th id="thT">Время';
 						tblTr += '</td><th id="thP">Расценка';
 						tblTr += '</td></tr>';
 			tblTr +='<tr class="trTable"><td class="tdId">';//ID	

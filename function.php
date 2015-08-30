@@ -426,7 +426,7 @@ if(!$access->accessYes($idPage)){
 	$r=new Result($access->getConnDB());
 	$data=$r->checkOrder($value);
 	$data['login']=true;
-
+//print_r($data);
 	echo json_encode($data);
 }
 
@@ -695,6 +695,8 @@ $result=$access->resQuery($query);
 $query="DELETE FROM `ns_admin` WHERE `o_id`='$o_id'";
 $result=$access->resQuery($query);
 $query="DELETE FROM `ns_order_dubl` WHERE `o_id`='$o_id'";
+$result=$access->resQuery($query);
+$query="DELETE FROM `ns_results` WHERE `a_id`='$a_id'";
 $result=$access->resQuery($query);
 	if($result==true){
 		$data["status"]=1;
@@ -1702,7 +1704,7 @@ function fsFamilySelect($idPage)
 
  	if($res=new Result($access->getConnDB())){
 		if($period=="week"){
-			$toJS=$res->getWeekTable($w_id,$week,$month,$year);
+			$toJS=$res->getWeekTable($w_id,$week,$year);
 		}else if($period=="month"){
 			$toJS=$res->getMonthTable($w_id,$month,$year);
 		}
@@ -1713,105 +1715,6 @@ function fsFamilySelect($idPage)
 	$toJS['login']=true;
 	echo json_encode($toJS);
  }
-
-// if($period=="week"){
-// 	$query="SELECT `ns_orders.order`,`ns_model_list.mName`,`ns_model_list.lSection`,`ns_techmap.serial`,`ns_techmap.descript`,`ns_techmap.time`,`ns_workers.payment`,`ns_results.countDid`,`ns_counts.count`,`ns_results.r_id`
-// FROM `ns_workers`,`ns_orders`,`ns_results`,`ns_model_list`,`ns_section_list`,`ns_techmap`,`ns_counts`
-// WHERE 
-// 	ns_results.o_id=ns_orders.o_id 
-// AND ns_results.w_id='$w_id' 
-// AND ns_results.week='$week'
-// AND ns_results.month='$month'
-// AND ns_results.year='$year'
-// AND ns_results.ml_id=ns_model_list.ml_id
-// AND ns_results.sl_id=ns_section_list.sl_id
-// AND ns_results.sl_id=ns_techmap.sl_id
-// AND ns_results.t_id=ns_techmap.t_id
-// AND ns_results.m_id=ns_counts.m_id
-// 	ORDER BY date DESC";
-// }else if($period=="month"){
-// 	$query="SELECT `ns_orders.order`,`ns_model_list.mName`,`ns_section_list.lSection`,`ns_techmap.serial`,`ns_techmap.descript`,`ns_techmap.time`,`ns_workers.payment`,`ns_results.countDid`,`ns_counts.count`,`ns_results.r_id`
-// FROM `ns_workers`,`ns_orders`,`ns_results`,`ns_model_list`,`ns_section_list`,`ns_techmap`,`ns_counts`
-// WHERE ns_results.o_id=ns_orders.o_id 
-// AND ns_results.w_id='$w_id' 
-// AND ns_results.month='$month'
-// AND ns_results.year='$year'
-// AND ns_results.ml_id=ns_model_list.ml_id
-// AND ns_results.sl_id=ns_section_list.sl_id
-// AND ns_results.sl_id=ns_techmap.sl_id
-// AND ns_results.t_id=ns_techmap.t_id
-// AND ns_results.m_id=ns_counts.m_id
-// 	ORDER BY date DESC";
-// }
-/*отладка*/
-//$toJS["query"]=$query;
-//echo '$query='.$query;
-//$result=$access->resQuery($query);
-
-// if ( @mysql_num_rows($result) == 0 ){
-// 		$toJS["status"]=0;
-// }else {$toJS["status"]=1;}
-// $res=new Result(connDB());
-// if($period=="week"){
-// 	$toJS=res->getMonthTable($w_id,$month,$year);
-// 	//$konto+=(float)$row["payment"]*$row["countDid"];
-// 		// $toJS["data"][$i]=array(
-// 		// 	"r_id"=>$res->getWeekTable["r_id"],
-// 		// 	"serial"=>$res->getWeekTable["serial"],
-// 		// 	"order"=>$res->getWeekTable["order"],
-// 		// 	"model"=>$res->getWeekTable["mName"],
-// 		// 	"section"=>$res->getWeekTable["lSection"],
-// 		// 	"operate"=>$res->getWeekTable["descript"],
-// 		// 	"count"=>$res->getWeekTable["countDid"],
-// 		// 	"payment"=>$res->getWeekTable["payment"],
-// 		// 	"time"=>$res->getWeekTable["time"]*$row["countDid"],
-// 		// 	"sum"=>$res->getWeekTable["payment"]*$res->getWeekTable["countDid"]*$res->getWeekTable["time"]
-// 		// 	);
-
-// // }elseif($period=="month"){
-// 	$toJS=res->getMonthTable($w_id,$month,$year);
-// 		// $toJS["data"][$i]=array(
-// 		// 	"r_id"=>$res->getWeekTable["r_id"],
-// 		// 	"serial"=>$res->getWeekTable["serial"],
-// 		// 	"order"=>$res->getWeekTable["order"],
-// 		// 	"model"=>$res->getWeekTable["mName"],
-// 		// 	"section"=>$res->getWeekTable["lSection"],
-// 		// 	"operate"=>$res->getWeekTable["descript"],
-// 		// 	"count"=>$res->getWeekTable["countDid"],
-// 		// 	"payment"=>$res->getWeekTable["payment"],
-// 		// 	"time"=>$res->getWeekTable["time"]*$row["countDid"],
-// 		// 	"sum"=>$res->getWeekTable["payment"]*$res->getWeekTable["countDid"]*$res->getWeekTable["time"]
-// 		// 	);
-// }
-// $i=0;
-// (int)$sumTime=0;
-// (float)$sum=0;
-// (int)$count=0;
-// (float)$konto=0;
-// while($row=mysql_fetch_array($result,MYSQL_ASSOC)){
-
-// $sumTime+=$row["time"]*$row["countDid"];
-// $konto+=(float)$row["payment"]*$row["countDid"];
-// 		$toJS["data"][$i]=array(
-// 			"r_id"=>$row["r_id"],
-// 			"serial"=>$row["serial"],
-// 			"order"=>$row["order"],
-// 			"model"=>$row["mName"],
-// 			"section"=>$row["lSection"],
-// 			"operate"=>$row["descript"],
-// 			"count"=>$row["countDid"],
-// 			"payment"=>$row["payment"],
-// 			"time"=>$row["time"]*$row["countDid"],
-// 			"sum"=>(float)$row["payment"]*$row["countDid"]*$row["time"]
-// 			);
-// $i++;
-// }
- // $toJS["sumTime"]=$sumTime;
- // $toJS["konto"]=$konto;
-// $toJS['login']=true;
-// echo json_encode($toJS);
-//}
-
 
 function fsSelectOrder($idPage){
 $access=new ToBase();
@@ -1838,8 +1741,6 @@ $a_id=(int)$value->a_id;
 				$i++;
 			}               
 		//print_r($data);
-
-
 		//echo 't_id='.$row['t_id'];
 		$data['status']=1;
 		
@@ -1931,8 +1832,10 @@ if(!$access->accessYes($idPage)){
 	exit;
 }
 $data['login']=true;
-
-$query="SELECT * FROM ns_section_list ORDER BY lSection";
+$value = json_decode($_REQUEST["data"]);
+$m_id=$value->m_id;
+$a_id=$value->a_id;
+$query="SELECT ns_section_list.sl_id, ns_section_list.lSection FROM `ns_section_list`,ns_models,ns_techmap WHERE ns_models.m_id='$m_id' AND ns_models.a_id='$a_id' AND ns_models.ml_id=ns_techmap.ml_id AND ns_section_list.sl_id=ns_techmap.sl_id GROUP BY lSection";
 
 $result=$access->resQuery($query);
 //$result=mysql_query($query)or die("Запрос не выполнен".mysql_error());
@@ -2383,12 +2286,12 @@ $w_id=0;
 					}
 					if($sumPayment!=0 || $sumTime!=0){
 						$dt["data"][$num]["sumPrice"]=round($sumPayment,2);
-						$dt["data"][$num]["sumTime"]=$sumTime;//$sumTime;
+						$dt["data"][$num]["sumTime"]=round($sumTime,2);//$sumTime;
 						$kokku+=round($sumPayment,2);
 					}
 			}
 		}   
-			$dt["kokku"]=$kokku;
+			$dt["kokku"]=round($kokku,2);
 			$dt["f"]=0;
 			
 		echo json_encode($dt);
